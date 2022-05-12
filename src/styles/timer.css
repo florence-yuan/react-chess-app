@@ -1,0 +1,45 @@
+.timer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 20rem;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 1.25rem;
+    background-color: var(--bg-color);
+    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -ms-border-radius: 0 0 5px 5px;
+    -o-border-radius: 0 0 5px 5px;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.timer .timePanel {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.15rem;
+    width: 100%;
+}
+
+.timer .timePanelWhite {
+    border-right: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+.timer .timePanelColor {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+.timer .timePanelWhite .timePanelColor {
+    background-color: white;
+}
+
+.timer .timePanelBlack .timePanelColor {
+    background-color: black;
+}

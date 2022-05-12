@@ -1,0 +1,75 @@
+.countCont {
+	display: block;
+	position: absolute;
+	top: 1.5rem;
+	left: 2rem;
+	z-index: 10;
+}
+
+.more {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    background-image: url(../images/more.svg);
+}
+
+.counter {
+	display: block;
+	margin-top: 5rem;
+	line-height: 1.6;
+	border-collapse: collapse;
+	overflow: hidden;
+	display: block;
+	transition: 0.3s ease;
+	-webkit-transition: 0.3s ease;
+	-moz-transition: 0.3s ease;
+	-ms-transition: 0.3s ease;
+	-o-transition: 0.3s ease;
+	background-color: var(--bg-color);
+	transform: scale(0);
+	z-index: 30;
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform-origin: top left;
+	border-radius: 6px;
+	opacity: 0;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-ms-border-radius: 6px;
+	-o-border-radius: 6px;
+}
+
+.counter.open-counter {
+	transform: none;
+	box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	opacity: 1;
+}
+
+.counter th {
+	border-bottom: 1px solid rgba(134, 134, 134, 0.6);
+	text-transform: uppercase;
+}
+
+.counter tr {
+	width: 20rem;
+	padding: 0 5px 0 100px;
+}
+
+.counter tr:nth-of-type(even) {
+	background-color: rgba(134, 134, 134, 0.15);
+}
+
+.counter tr th {
+	text-transform: uppercase;
+}
+
+.counter th, .counter td {
+	padding: 7px 15px;
+	text-align: center;
+}

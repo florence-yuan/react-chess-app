@@ -1,27 +1,28 @@
 {
   "files": {
-    "main.css": "/react-chess-app/static/css/main.6063545e.chunk.css",
-    "main.js": "/react-chess-app/static/js/main.f3c245a5.chunk.js",
-    "main.js.map": "/react-chess-app/static/js/main.f3c245a5.chunk.js.map",
-    "runtime-main.js": "/react-chess-app/static/js/runtime-main.cabb6616.js",
-    "runtime-main.js.map": "/react-chess-app/static/js/runtime-main.cabb6616.js.map",
-    "static/js/2.aa32cd79.chunk.js": "/react-chess-app/static/js/2.aa32cd79.chunk.js",
-    "static/js/2.aa32cd79.chunk.js.map": "/react-chess-app/static/js/2.aa32cd79.chunk.js.map",
-    "static/js/3.96f05a38.chunk.js": "/react-chess-app/static/js/3.96f05a38.chunk.js",
-    "static/js/3.96f05a38.chunk.js.map": "/react-chess-app/static/js/3.96f05a38.chunk.js.map",
+    "main.css": "/react-chess-app/static/css/main.939ec091.chunk.css",
+    "main.js": "/react-chess-app/static/js/main.11215276.chunk.js",
+    "main.js.map": "/react-chess-app/static/js/main.11215276.chunk.js.map",
+    "runtime-main.js": "/react-chess-app/static/js/runtime-main.2a31765f.js",
+    "runtime-main.js.map": "/react-chess-app/static/js/runtime-main.2a31765f.js.map",
+    "static/js/2.922d0c73.chunk.js": "/react-chess-app/static/js/2.922d0c73.chunk.js",
+    "static/js/2.922d0c73.chunk.js.map": "/react-chess-app/static/js/2.922d0c73.chunk.js.map",
+    "static/js/3.12332c76.chunk.js": "/react-chess-app/static/js/3.12332c76.chunk.js",
+    "static/js/3.12332c76.chunk.js.map": "/react-chess-app/static/js/3.12332c76.chunk.js.map",
     "index.html": "/react-chess-app/index.html",
-    "static/css/main.6063545e.chunk.css.map": "/react-chess-app/static/css/main.6063545e.chunk.css.map",
-    "static/js/2.aa32cd79.chunk.js.LICENSE.txt": "/react-chess-app/static/js/2.aa32cd79.chunk.js.LICENSE.txt",
+    "static/css/main.939ec091.chunk.css.map": "/react-chess-app/static/css/main.939ec091.chunk.css.map",
+    "static/js/2.922d0c73.chunk.js.LICENSE.txt": "/react-chess-app/static/js/2.922d0c73.chunk.js.LICENSE.txt",
     "static/media/settings.css": "/react-chess-app/static/media/undo_black_24dp.70c7fd79.svg",
     "static/media/board.css": "/react-chess-app/static/media/wqueen.ef36ca9d.png",
     "static/media/index.css": "/react-chess-app/static/media/error_boundary.9beb159a.png",
     "static/media/utilities.css": "/react-chess-app/static/media/info.865b0c69.svg",
+    "static/media/keyboard_control.css": "/react-chess-app/static/media/keyboard.25667a4d.svg",
     "static/media/counter.css": "/react-chess-app/static/media/more.f2acbf2e.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.cabb6616.js",
-    "static/js/2.aa32cd79.chunk.js",
-    "static/css/main.6063545e.chunk.css",
-    "static/js/main.f3c245a5.chunk.js"
+    "static/js/runtime-main.2a31765f.js",
+    "static/js/2.922d0c73.chunk.js",
+    "static/css/main.939ec091.chunk.css",
+    "static/js/main.11215276.chunk.js"
   ]
 }

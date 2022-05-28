@@ -22,7 +22,6 @@ export default function History(props) {
             <li
                 key={ind}
                 onClick={() => props.timeTravel(ind)}
-                className="ripple-effect"
             >{centry}
             </li>
         );

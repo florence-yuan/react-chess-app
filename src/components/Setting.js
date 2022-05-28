@@ -8,6 +8,7 @@ import ColorModeBtn from "./utilities/buttons/ColorMode";
 import UndoBtn from "./utilities/buttons/Undo";
 import OpenSettingBtn from "./utilities/buttons/OpenSetting";
 import CloseSettingBtn from "./utilities/buttons/CloseSetting";
+import OpenPiecePosBtn from "./utilities/buttons/OpenPiecePos"
 
 export default class Setting extends React.Component {
 	constructor(props) {
@@ -78,6 +79,7 @@ export default class Setting extends React.Component {
 	render() {
         return (
             <>
+                <OpenPiecePosBtn />
                 <ColorModeBtn
                     updateColorMode={this.props.updateColorMode}
                     updateLightMode={this.updateLightMode}
@@ -94,7 +96,9 @@ export default class Setting extends React.Component {
                         <h2>Appearance</h2>
                         <LayoutSec
                             updateShowPos={this.props.updateShowPos}
+                            updateDisplayPos={this.props.updateDisplayPos}
                             openPieceCnt={this.props.openPieceCnt}
+                            openKeyboardControl={this.props.openKeyboardControl}
                         />
                     </section>
                     <hr />

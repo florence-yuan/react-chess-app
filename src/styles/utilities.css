@@ -103,3 +103,72 @@ span.info::before {
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 	z-index: 5;
 }
+
+input.num-input::-webkit-outer-spin-button,
+input.num-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input.num-input[type="number"] {
+	-moz-appearance: textfield;
+	width: 2rem;
+    border: 0;
+	border: 2px solid rgba(128, 128, 128, 0.3);
+	border-radius: 3px;
+	outline: 0;
+	padding: 2px 3px;
+	background-color: transparent;
+	color: var(--text-color);
+	font-size: 1rem;
+	text-align: center;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+
+input.num-input[type="number"]:invalid {
+    border-color: var(--primary-red);
+}
+
+input.num-input[type="number"]:focus {
+	box-shadow: none;
+	border-color: var(--medium-sky-blue);
+}
+
+input.submit-btn {
+	display: block;
+    margin-top: 1.5rem !important;
+    appearance: none;
+    background-color: rgba(119, 123, 131, 0.05);
+    color: var(--text-color);
+    font-size: 1rem;
+    border: 2px solid rgba(119, 123, 131, 0.4);
+    outline: 0;
+    padding: 6px 11px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+
+input.submit-btn:hover {
+    cursor: pointer;
+    background-color: rgba(119, 123, 131, 0.15);
+}
+
+input.submit-btn:focus {
+	border-color: var(--medium-sky-blue);
+}

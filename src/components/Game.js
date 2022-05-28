@@ -4,8 +4,11 @@ import Turn from "./utilities/Turn"
 import Timer from "./Timer"
 import Message from "./utilities/Message"
 import Counter from "./Counter"
+import KeyboardControl from "./KeyboardControl"
 import PawnPromotion from "./PawnPromotion"
 import OpenPieceCntBtn from "./utilities/buttons/OpenPieceCnt"
+import OpenControlBtn from "./utilities/buttons/OpenControl"
+import { selectGenPos } from "./Functions"
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -13,7 +16,6 @@ export default class Game extends React.Component {
         
         this.state = {
             side: props.side,
-            color: props.color,
             selected: null,
             turnStart: null,
             msg: null,
@@ -25,11 +27,18 @@ export default class Game extends React.Component {
         this.updateTurnStart = this.updateTurnStart.bind(this);
         this.updatePossiblePos = this.updatePossiblePos.bind(this);
         this.updateMsg = this.updateMsg.bind(this);
+
+        this.handleClick = this.handleClick.bind(this);
+        this.handleUnSelect = this.handleUnSelect.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handlePawnPromo = this.handlePawnPromo.bind(this);
+        this.handleKeyboardControl = this.handleKeyboardControl.bind(this);
     }
 
-    updateSelect(pos) {
+    updateSelect(selectInfo) {
+        console.log(selectInfo);
         this.setState({
-            selected: pos,
+            selected: selectInfo,
         });
     }
 
@@ -50,6 +59,167 @@ export default class Game extends React.Component {
             msgType: newType,
             msg: newMsg,
         });
+    }
+
+    encode(a, b) {
+        return a * 8 + b;
+    }
+
+    checkMove(oldRow, oldCol, newRow, newCol, selected = null) {
+        let selectFunct = selected ? selected[3] : this.state.selected[3];
+        const posbt = selectFunct(oldRow, oldCol, this.props.sideMap);
+        return posbt.includes(this.encode(newRow, newCol));
+    }
+
+    handleUnSelect(pieceName, oldRow, oldCol) {
+        let msg = `Un-selected ${pieceName} at (${oldRow}, ${oldCol})`;
+        this.updateSelect(null);
+        this.updatePossiblePos(null);
+        this.updateMsg("complete", msg);
+    }
+
+    handleSelect(oldPieceName, oldRow, oldCol, newRow, newCol, moveInfo) {
+        let msg = `Moved ${oldPieceName} to (${newRow}, ${newCol})`;
+        this.updateSelect(null);
+        this.updateMsg("complete", msg);
+        let isComplete = this.props.updateBoard(oldRow, oldCol, newRow, newCol);
+        this.props.addHistory(moveInfo);
+        this.props.updateTurn();
+
+        return isComplete;
+    }
+
+    handlePawnPromo(oldPieceName, oldSide, newRow, newCol) {
+        if (oldPieceName === "pawn" &&
+            ((oldSide === 1 && newRow === 7)
+          || (oldSide === 2 && newRow === 0))) {
+            document.body.classList.add("open-promo");
+            console.log("set pawn promotion", oldSide);
+            this.props.setPawnPromotion(oldSide, newRow, newCol);
+        }
+    }
+
+    handleMove(oldPieceName, oldSide, oldRow, oldCol, newRow, newCol, selected = null) {
+        let takeOverPiece = this.props.board[[newRow, newCol]];
+        let takeOverSide = this.props.sideMap[[newRow, newCol]];
+
+        let ok = this.checkMove(oldRow, oldCol, newRow, newCol, selected);
+        console.log(`move ${oldPieceName} from (${oldRow}, ${oldCol}) to (${newRow}, ${newCol})`);
+        if (ok) {
+            // Move Info (for history)
+            let moveInfo = {
+                isPawnPromotion: false,
+                pieceName: oldPieceName,
+                pieceSide: oldSide,
+                pieceOldRow: oldRow,
+                pieceOldCol: oldCol,
+                pieceNewRow: newRow,
+                pieceNewCol: newCol,
+                takeOverName: null,
+                takeOverSide: null,
+                takeOverRow: null,
+                takeOverCol: null,
+            };
+
+            // Deal with possible piece take over
+            if (takeOverSide && takeOverPiece) {
+                this.props.updatePieceCnt(takeOverSide, takeOverPiece);
+                moveInfo.takeOverName = takeOverPiece;
+                moveInfo.takeOverSide = takeOverSide;
+                moveInfo.takeOverRow = newRow;
+                moveInfo.takeOverCol = newCol;
+            }
+            
+            // Select piece
+            let isComplete = this.handleSelect(oldPieceName, oldRow, oldCol, newRow, newCol, moveInfo);
+
+            // Deal with possible pawn promotion
+            if (!isComplete)
+                this.handlePawnPromo(oldPieceName, oldSide, newRow, newCol);
+
+            // Clear possible positions
+            this.updatePossiblePos(null);
+            
+            // For Timer
+            this.updateTurnStart(oldSide);
+        } else {
+            // Warning: wrong move
+            this.updateMsg("warning", `Wrong move`);
+        }
+    }
+
+    handleClick(piece) {
+        if (this.props.complete) return;
+        
+        let selectInfo = this.state.selected;
+        let side = piece.side;
+        let turn = this.props.turn;
+        let newRow = piece.row;
+        let newCol = piece.col;
+        let pieceName = piece.name;
+        
+        if (selectInfo) {
+            let oldRow = selectInfo[0];
+            let oldCol = selectInfo[1];
+            let oldPieceName = selectInfo[2];
+            let oldSide = this.props.sideMap[[oldRow, oldCol]];
+
+            // Already selected piece, now selecting destination
+            if (newRow === oldRow && newCol === oldCol) {
+                // un-select piece
+                this.handleUnSelect(pieceName, oldRow, oldCol);
+            } else {
+                this.handleMove(oldPieceName, oldSide, oldRow, oldCol, newRow, newCol);
+            }
+        } else {
+            if (side === turn) {
+                if (!pieceName) return;
+                // this is 'side''s turn
+                this.updateSelect([newRow, newCol, pieceName, piece.genPossibilities]);
+                this.updateMsg("complete", `Selected ${pieceName} at (${newRow}, ${newCol})`);
+                const posbt = piece.genPossibilities(newRow, newCol, this.props.sideMap);
+                this.updatePossiblePos(posbt);
+            } else {
+                // this isn't 'side''s turn
+                this.updateMsg("warning", `It's ${turn === 1 ? "black" : "white"}'s turn`);
+            }
+        }
+    }
+
+    handleDoubleClick(piece) {
+        if (this.props.complete) return;
+
+        let side = piece.side;
+        let turn = this.props.turn;
+        let newRow = piece.row;
+        let newCol = piece.col;
+        let pieceName = piece.name;
+
+        if (side === turn) {
+            this.updateSelect([newRow, newCol, pieceName, piece.genPossibilities]);
+            const posbt = piece.genPossibilities(newRow, newCol, this.props.sideMap);
+            this.updatePossiblePos(posbt);
+            this.updateMsg("complete", `Selected ${this.props.name} at (${newRow}, ${newCol})`);
+        } else {
+            this.updateMsg("warning", `It's ${turn === 1 ? "black" : "white"}'s turn`);
+        }
+    }
+
+    handleKeyboardControl(row1, col1, row2, col2) {
+        if (this.props.complete) return;
+
+        let oldSide = this.props.sideMap[[row1, col1]];
+        let turn = this.props.turn;
+        let oldPieceName = this.props.board[[row1, col1]];
+        if (oldSide === turn) {
+            let selectInfo = [row1, col1, oldPieceName, selectGenPos(oldPieceName)]
+            const posbt = selectGenPos(oldPieceName)(row1, col1, this.props.sideMap);
+            this.updatePossiblePos(posbt);
+            this.handleMove(oldPieceName, oldSide, row1, col1, row2, col2, selectInfo);
+        } else {
+            console.log(oldSide, turn);
+            this.updateMsg("warning", `It's ${turn === 1 ? "black" : "white"}'s turn`);
+        }
     }
     
     render() {
@@ -72,21 +242,11 @@ export default class Game extends React.Component {
                 />
                 <Board
                     {...this.state}
-                    turn={this.props.turn}
+                    showPos={this.props.showPos}
                     board={this.props.board}
                     sideMap={this.props.sideMap}
-                    showPos={this.props.showPos}
-                    addHistory={this.props.addHistory}
-
-                    complete={this.props.complete}
-                    updateTurn={this.props.updateTurn}
-                    updateSelect={this.updateSelect}
-                    updateBoard={this.props.updateBoard}
-                    updatePieceCnt={this.props.updatePieceCnt}
-                    updatePossiblePos={this.updatePossiblePos}
-                    updateMsg={this.updateMsg}
-                    updateTurnStart={this.updateTurnStart}
-                    setPawnPromotion={this.props.setPawnPromotion}
+                    handleClick={this.handleClick}
+                    handleDoubleClick={this.handleDoubleClick}
                 />
                 <Message
                     type={this.state.msgType}
@@ -104,6 +264,14 @@ export default class Game extends React.Component {
                 <PawnPromotion
                     pawnPromotion={this.props.pawnPromotion}
                 />
+                <div className="controlCont">
+                    <OpenControlBtn
+                        openKeyboardControl={this.props.openKeyboardControl}
+                    />
+                    <KeyboardControl
+                        handleKeyboardControl={this.handleKeyboardControl}
+                    />
+                </div>
             </>
         );
     }

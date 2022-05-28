@@ -1,0 +1,99 @@
+.controlCont {
+    position: absolute;
+    bottom: 8rem;
+    right: 5rem;
+    display: block;
+    z-index: 15;
+}
+
+.open-control {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	background-image: url(./../../src/images/keyboard.svg);
+}
+
+.open-control::after {
+	content: "";
+	position: absolute;
+	top: 7.5px;
+	right: 7px;
+	display: block;
+	width: 10px;
+	height: 10px;
+	background-color: var(--medium-sky-blue);
+	filter: var(--invert);
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	-webkit-filter: var(--invert);
+}
+
+.keyboard-control {
+    display: block;
+    background-color: var(--bg-color);
+    width: 22.5rem;
+    margin-bottom: 6rem;
+    padding: 1.25rem 2rem 1.5rem;
+    line-height: 1.6;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(38, 39, 41, 0.3) 0px 30px 60px -30px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    opacity: 0;
+    transform-origin: 80% bottom;
+    transform: scale(0);
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+.keyboard-control.open-keyboard {
+    opacity: 1;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+}
+
+.keyboard-control form > * + * {
+    margin-top: 1rem;
+}
+
+.keyboard-control .control-caption {
+    font-size: 1.25rem;
+}
+
+.keyboard-control fieldset {
+    appearance: none;
+    border: 0;
+}
+
+.keyboard-control .control-inputs {
+    display: flex;
+    gap: 1rem;
+}
+
+.keyboard-control legend {
+    font-size: 1.15rem;
+}
+
+.keyboard-control label {
+    font-size: 1.15rem;
+    margin-right: 4px;
+}
+
+.keyboard-control input[type="number"] {
+	width: 2rem !important;
+}

@@ -37,28 +37,18 @@ export default function Board(props) {
                     class={classStr}
                 >
                     <Figure
-                        turn={props.turn}
                         side={props.sideMap[[i, j]]}
                         name={props.board[[i, j]]}
                         row={i}
                         col={j}
                         board={props.board}
                         sideMap={props.sideMap}
-                        selected={props.selected}
-                        complete={props.complete}
-                        completed={props.completed}
-        
-                        updateTurn={props.updateTurn}
-                        updateSelect={props.updateSelect}
-                        updateBoard={props.updateBoard}
-                        updatePieceCnt={props.updatePieceCnt}
-                        updatePossiblePos={props.updatePossiblePos}
-                        updateMsg={props.updateMsg}
-                        updateTurnStart={props.updateTurnStart}
-        
-                        setPawnPromotion={props.setPawnPromotion}
-                        addHistory={props.addHistory}
+                        handleClick={props.handleClick}
+                        handleDoubleClick={props.handleDoubleClick}
                     />
+                    <div className="piece-pos">
+                        {`(${i + 1}, ${j + 1})`}
+                    </div>
                 </Square>
             )
             line.push(square);

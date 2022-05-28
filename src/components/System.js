@@ -185,10 +185,21 @@ export default class System extends React.Component {
         const counter = document.querySelector(".counter");
         if (counter.classList.contains('open-counter')) {
             counter.classList.remove('open-counter');
-            document.querySelector("#input2").checked = false;
+            document.querySelector("#input3").checked = false;
         } else {
             counter.classList.add('open-counter');
-            document.querySelector("#input2").checked = true;
+            document.querySelector("#input3").checked = true;
+        }
+    }
+
+    openKeyboardControl() {
+        const keyboard = document.querySelector(".keyboard-control");
+        if (keyboard.classList.contains('open-keyboard')) {
+            keyboard.classList.remove('open-keyboard');
+            document.querySelector("#input4").checked = false;
+        } else {
+            keyboard.classList.add('open-keyboard');
+            document.querySelector("#input4").checked = true;
         }
     }
 
@@ -196,6 +207,16 @@ export default class System extends React.Component {
         this.setState({
             showPos: newShowPos,
         });
+    }
+
+    updateDisplayPos() {
+        if (document.body.classList.contains('open-piece-pos')) {
+            document.body.classList.remove('open-piece-pos');
+            document.querySelector("#input2").checked = false;
+        } else {
+            document.body.classList.add('open-piece-pos');
+            document.querySelector("#input2").checked = true;
+        }
     }
 
     updateColorMode(newColorMode) {
@@ -387,6 +408,7 @@ export default class System extends React.Component {
                     updatePieceCnt={this.updatePieceCnt}
 
                     openPieceCnt={this.openPieceCnt}
+                    openKeyboardControl={this.openKeyboardControl}
 
                     addHistory={this.addHistory}
 
@@ -399,7 +421,9 @@ export default class System extends React.Component {
                 <Setting
                     {...this.state}
                     openPieceCnt={this.openPieceCnt}
+                    openKeyboardControl={this.openKeyboardControl}
                     updateShowPos={this.updateShowPos}
+                    updateDisplayPos={this.updateDisplayPos}
                     updateColorMode={this.updateColorMode}
                     updatePieceStyle={this.updatePieceStyle}
                     history={this.state.history}

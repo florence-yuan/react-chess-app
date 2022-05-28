@@ -21,7 +21,7 @@ function TimeLimRadio(props) {
             id={props.id}
             name="time"
             tabIndex="0"
-            defaultChecked={props.isDefault}
+            checked={props.checked}
             onChange={() => {
                 if (props.id === "no_time_lim") {
                     props.updateTimeLim(false);
@@ -38,7 +38,7 @@ function NoTimeLimOpt(props) {
         <div className="ripple-effect">
             <TimeLimRadio
                 id={`no_time_lim`}
-                isDefault={false}
+                checked={props.checked}
                 updateTimeLim={props.updateIsTimeLim}
             />
             <label htmlFor={`no_time_lim`}>
@@ -55,7 +55,7 @@ function TimeLimOpt(props) {
                 id={`${props.time}_${props.unit}`}
                 time={props.time}
                 unit={props.unit}
-                isDefault={props.isDefault}
+                checked={props.checked}
                 updateTimeLim={props.updateTimeLim}
             />
             <label htmlFor={`${props.time}_${props.unit}`}>
@@ -107,8 +107,8 @@ class CustomTimeLimInput extends react.Component {
                 max={this.props.maxTime}
                 name={this.props.unit}
                 id={this.props.unit}
+                className="num-input"
                 aria-label={this.props.unit}
-
                 placeholder="00"
                 value={this.state.value}
                 onChange={this.handleChange}
@@ -149,7 +149,7 @@ class CustomTimeLimOpt extends react.Component {
 
     render() {
         return (
-            <div className="custom-time-opt ripple-effect">
+            <div className="custom-time-opt">
                 <TimeLimRadio
                     id="custom_time"
                     time={
@@ -208,14 +208,17 @@ export default function TimeLimSec(props) {
         [2, "hour"],
     ];
 
+    let matched = false;
     let opts = optDatas.map((optData, i) => {
         let secs = optData[0] * (optData[1] === "minute" ? 60 : 3600);
+        if (timeLimOpt === secs)
+            matched = true;
         return (
             <TimeLimOpt
                 key={i}
                 time={optData[0]}
                 unit={optData[1]}
-                isDefault={timeLimOpt === secs}
+                checked={timeLimOpt === secs}
                 updateTimeLim={props.updateTimeLim}
             />
         )
@@ -225,6 +228,7 @@ export default function TimeLimSec(props) {
         <div className="setting timeSet">
             <span>Choose time limit</span>
             <NoTimeLimOpt
+                checked={!matched}
                 updateIsTimeLim={props.updateIsTimeLim}
             />
             {opts}

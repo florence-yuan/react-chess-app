@@ -114,6 +114,10 @@ body.open-setting .settings {
 	gap: 0.5rem;
 }
 
+.setting.switchSet > span {
+	width: 20rem;
+}
+
 .setting.extSet,
 .setting.modeSet,
 .setting.pieceSet,
@@ -363,36 +367,6 @@ body.open-setting .settings {
 	margin-top: 5px;
 }
 
-.time_input input::-webkit-outer-spin-button,
-.time_input input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-
-/* Firefox */
-
-.time_input input[type = number] {
-	-moz-appearance: textfield;
-}
-
 .time_input input {
-	width: 2.5rem;
-	appearance: none;
-	border: 2px solid rgba(128, 128, 128, 0.3);
-	border-radius: 3px;
-	outline: 0;
-	padding: 3px 5px;
-	background-color: transparent;
-	color: var(--text-color);
-	font-size: 1rem;
-	text-align: center;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-ms-border-radius: 3px;
-	-o-border-radius: 3px;
-}
-
-.time_input input:focus {
-	box-shadow: none;
-	border-color: var(--medium-sky-blue);
+	width: 2.5rem !important;
 }

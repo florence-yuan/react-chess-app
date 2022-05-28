@@ -78,11 +78,9 @@ body.fancy-style {
 	--img-route: styled_pieces;
 }
 
-/* *:not(input):focus {
-	outline: 1px solid var(--deep-sky-blue) !important;
-	box-shadow: 0 0 0 3px rgba(67, 93, 133, 0.25);
-	outline-offset: 3px;
-} */
+*:focus {
+	border-color: var(--medium-sky-blue);
+}
 
 ::selection {
 	background-color: rgba(0, 140, 255, 0.25);
@@ -111,17 +109,17 @@ h1, h2, h3, h4, h5, h6, th {
 }
 
 span.ripple {
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    /*animation: ripple 1.5s linear;
-    */background-color: rgba(120, 123, 131, 0.3);
-    /*-webkit-animation: ripple 1.5s linear;
-    */transition: opacity 0.4s ease, transform 1.25s ease;
-    -webkit-transition: opacity 0.4s ease, transform 1.5s ease;
-    -moz-transition: opacity 0.4s ease, transform 1.5s ease;
-    -ms-transition: opacity 0.4s ease, transform 1.5s ease;
-    -o-transition: opacity 0.4s ease, transform 1.5s ease;
+	position: absolute;
+	border-radius: 50%;
+	transform: scale(0);
+	/*animation: ripple 1.5s linear;
+	*/background-color: rgba(120, 123, 131, 0.3);
+	/*-webkit-animation: ripple 1.5s linear;
+	*/transition: opacity 0.4s ease, transform 1s ease;
+	-webkit-transition: opacity 0.4s ease, transform 1s ease;
+	-moz-transition: opacity 0.4s ease, transform 1s ease;
+	-ms-transition: opacity 0.4s ease, transform 1s ease;
+	-o-transition: opacity 0.4s ease, transform 1s ease;
 }
 
 span.ripple.active {
@@ -198,7 +196,7 @@ button.btn {
     width: 3rem;
     height: 3rem;
     background-color: transparent;
-    border: 0;
+	border: 1px solid rgba(120, 123, 131, 0.3) !important;
     outline: 0;
     filter: var(--invert);
     background-size: 70%;
@@ -223,6 +221,7 @@ button.btn:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
 }
+
 
 button.btn:not(:disabled):hover, button.btn:not(:disabled):focus {
 	background-color: rgba(0, 0, 0, 0.1);

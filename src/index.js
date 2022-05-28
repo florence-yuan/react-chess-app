@@ -8,6 +8,7 @@ import './styles/timer.css';
 import './styles/utilities.css';
 import './styles/pawn_promotion.css';
 import './styles/switch.css';
+import './styles/keyboard_control.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

@@ -1,0 +1,183 @@
+board component {
+    turn={this.props.turn}
+    addHistory={this.props.addHistory}
+    complete={this.props.complete}
+    updateTurn={this.props.updateTurn}
+    updateSelect={this.updateSelect}
+    updateBoard={this.props.updateBoard}
+    updatePieceCnt={this.props.updatePieceCnt}
+    updatePossiblePos={this.updatePossiblePos}
+    updateMsg={this.updateMsg}
+    updateTurnStart={this.updateTurnStart}
+    setPawnPromotion={this.props.setPawnPromotion}
+}
+
+figure component {
+    turn={props.turn}
+    selected={props.selected}
+    complete={props.complete}
+    completed={props.completed}
+
+    updateTurn={props.updateTurn}
+    updateSelect={props.updateSelect}
+    updateBoard={props.updateBoard}
+    updatePieceCnt={props.updatePieceCnt}
+    updatePossiblePos={props.updatePossiblePos}
+    updateMsg={props.updateMsg}
+    updateTurnStart={props.updateTurnStart}
+
+    setPawnPromotion={props.setPawnPromotion}
+    addHistory={props.addHistory}
+}
+
+Piece class {
+    // in constructor {
+        this.handleClick = this.handleClick.bind(this);
+        this.handleDoubleClick = this.handleDoubleClick.bind(this);
+        this.checkMove = this.checkMove.bind(this);
+        this.handleUnSelect = this.handleUnSelect.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handlePawnPromo = this.handlePawnPromo.bind(this);
+    }
+
+    // methods
+
+    encode(a, b) {
+        return a * 8 + b;
+    }
+
+    checkMove(oldRow, oldCol, newRow, newCol) {
+        const posbt = this.props.selected[3](oldRow, oldCol);
+        return posbt.includes(this.encode(newRow, newCol));
+    }
+
+    handleUnSelect(pieceName, oldRow, oldCol) {
+        let msg = `Un-selected ${pieceName} at (${oldRow}, ${oldCol})`;
+        this.props.updateSelect(null);
+        this.props.updatePossiblePos(null);
+        this.props.updateMsg("complete", msg);
+    }
+
+    handleSelect(oldPieceName, oldRow, oldCol, newRow, newCol, moveInfo) {
+        let msg = `Moved ${oldPieceName} to (${newRow}, ${newCol})`;
+        this.props.updateSelect(null);
+        this.props.updateMsg("complete", msg);
+        let isComplete = this.props.updateBoard(oldRow, oldCol, newRow, newCol);
+        this.props.addHistory(moveInfo);
+        this.props.updateTurn();
+
+        return isComplete;
+    }
+
+    handlePawnPromo(oldPieceName, oldSide, newRow, newCol) {
+        if (oldPieceName === "pawn" &&
+            ((oldSide === 1 && newRow === 7)
+          || (oldSide === 2 && newRow === 0))) {
+            document.body.classList.add("open-promo");
+            console.log("set pawn promotion", oldSide);
+            this.props.setPawnPromotion(oldSide, newRow, newCol);
+        }
+    }
+
+    handleClick() {
+        if (this.props.complete) return;
+        
+        let selectInfo = this.props.selected;
+        let side = this.props.side;
+        let turn = this.props.turn;
+        let newRow = this.props.row;
+        let newCol = this.props.col;
+        let pieceName = this.props.name;
+        
+        if (this.props.selected) {
+            let oldRow = selectInfo[0];
+            let oldCol = selectInfo[1];
+            let oldPieceName = selectInfo[2];
+            let oldSide = this.props.sideMap[[oldRow, oldCol]];
+
+            // Already selected piece, now selecting destination
+            if (newRow === oldRow && newCol === oldCol) {
+                // un-select piece
+                this.handleUnSelect(pieceName, oldRow, oldCol);
+            } else {
+                let takeOverPiece = this.props.board[[newRow, newCol]];
+                let takeOverSide = this.props.sideMap[[newRow, newCol]];
+    
+                let ok = this.checkMove(oldRow, oldCol, newRow, newCol);
+                if (ok) {
+                    // Move Info (for history)
+                    let moveInfo = {
+                        isPawnPromotion: false,
+                        pieceName: oldPieceName,
+                        pieceSide: oldSide,
+                        pieceOldRow: oldRow,
+                        pieceOldCol: oldCol,
+                        pieceNewRow: newRow,
+                        pieceNewCol: newCol,
+                        takeOverName: null,
+                        takeOverSide: null,
+                        takeOverRow: null,
+                        takeOverCol: null,
+                    };
+
+                    // Deal with possible piece take over
+                    if (takeOverSide && takeOverPiece) {
+                        this.props.updatePieceCnt(takeOverSide, takeOverPiece);
+                        moveInfo.takeOverName = takeOverPiece;
+                        moveInfo.takeOverSide = takeOverSide;
+                        moveInfo.takeOverRow = newRow;
+                        moveInfo.takeOverCol = newCol;
+                    }
+                    
+                    // Select piece
+                    let isComplete = this.handleSelect(oldPieceName, oldRow, oldCol, newRow, newCol, moveInfo);
+
+                    // Deal with possible pawn promotion
+                    if (!isComplete)
+                        this.handlePawnPromo(oldPieceName, oldSide, newRow, newCol);
+
+                    // Clear possible positions
+                    this.props.updatePossiblePos(null);
+                    
+                    // For Timer
+                    this.props.updateTurnStart(oldSide);
+                } else {
+                    // Warning: wrong move
+                    this.props.updateMsg("warning", `Wrong move`);
+                }
+            }
+        } else {
+            if (side === turn) {
+                if (!this.props.name) return;
+                // this is 'side''s turn
+                this.props.updateSelect([newRow, newCol, pieceName, this.genPossibilities]);
+                this.props.updateMsg("complete", `Selected ${pieceName} at (${newRow}, ${newCol})`);
+                const posbt = this.genPossibilities(newRow, newCol);
+                this.props.updatePossiblePos(posbt);
+            } else {
+                // this isn't 'side''s turn
+                this.props.updateMsg("warning", `It's ${turn === 1 ? "black" : "white"}'s turn`);
+            }
+        }
+    }
+
+    handleDoubleClick() {
+        if (this.props.complete) return;
+
+        let side = this.props.side;
+        let turn = this.props.turn;
+        let newRow = this.props.row;
+        let newCol = this.props.col;
+        let pieceName = this.props.name;
+
+        if (side === turn) {
+            this.props.updateSelect([newRow, newCol, pieceName, this.genPossibilities]);
+            const posbt = this.genPossibilities(newRow, newCol);
+            this.props.updatePossiblePos(posbt);
+            this.props.updateMsg("complete", `Selected ${this.props.name} at (${newRow}, ${newCol})`);
+        } else {
+            this.props.updateMsg("warning", `It's ${this.props.turn}'s turn`);
+        }
+    }
+
+}

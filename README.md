@@ -1,6 +1,6 @@
 # Chess React App
 This is a chess app created using React.
-([View Demo](https://narcissus-yuan.github.io/react-chess-app/))
+([View Demo](https://florence-yuan.github.io/react-chess-app/))
 
 # Interface Screenshot
 ![chess_interface](https://user-images.githubusercontent.com/92783418/171095743-bc31a0e9-4f8e-43ef-915b-42ed04a96bb7.png)
